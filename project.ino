@@ -10,6 +10,11 @@
 // ESP-32 built-in LED
 const int ledPin = 2;
 
+// Projector 5v -> 3.3v trigger
+const int triggerPin = 15; // Projector trigger pin (3.3v in)
+bool pinState = false; // State of the trigger pin
+bool prevState = false;  // Variable to store the previous state of the trigger pin
+bool functionExecuted = false; // Keep track if the screen trigger has been executed already
 
 // Relay Pins
 const int relayUp = 13;
@@ -21,6 +26,10 @@ unsigned long debounceDelay = 4000; // 4 seconds
 
 // WebServer object
 WebServer server(80);
+
+volatile bool pendingRestart = false;
+unsigned long restartAt = 0;
+const unsigned long restartDelayMs = 1200; // let HTTP reply flush
 
 // ----------------------------------------------------------------- RELAY CONTROL --------------------------------------------------------------------------------------------------
 // Projector Screen State
@@ -89,32 +98,37 @@ void resync() {
 
 // -------------------------------------------------------------------- SETTING CONTROL --------------------------------------------------------------------------------
 void handleSettings() {
-  if (server.hasArg("plain") == false) {
+  if (!server.hasArg("plain")) {
     server.send(400, "text/plain", "Body not received");
     return;
   }
 
   String body = server.arg("plain");
-  Serial.println("Received body: " + body);
-
-  StaticJsonDocument<200> doc;
+  StaticJsonDocument<256> doc;   // was 200; small bump for safety
   DeserializationError error = deserializeJson(doc, body);
-
   if (error) {
-    Serial.print(F("deserializeJson() failed: "));
-    Serial.println(error.f_str());
     server.send(400, "application/json", "{\"message\":\"Invalid JSON\"}");
     return;
   }
 
-  const char* ssid = doc["ssid"];
-  const char* password = doc["password"];
+  const char* ssid = doc["ssid"] | "";
+  const char* password = doc["password"] | "";
 
-  saveCredentials(ssid, password);
-  ScreenUp();
-  ESP.restart();
-  server.send(200, "application/json", "{\"message\":\"Settings saved\"}");
+  if (strlen(ssid) == 0) {
+    server.send(400, "application/json", "{\"message\":\"SSID required\"}");
+    return;
+  }
+
+  saveCredentials(String(ssid), String(password));
+
+  // Don't run ScreenUp() here (long blocking). We'll resync on next boot.
+  server.send(200, "application/json", "{\"message\":\"Settings saved. Rebooting...\"}");
+
+  // schedule a restart after response is sent
+  restartAt = millis() + restartDelayMs;
+  pendingRestart = true;
 }
+
 
 
 // --------------------------------------------------------------------- EEPROM -------------------------------------------------------------------------------------------------------
@@ -282,6 +296,11 @@ void loop() {
 
   // Handle web server requests
   server.handleClient();
+
+  if (pendingRestart && (millis() >= restartAt)) {
+    pendingRestart = false;
+    ESP.restart();
+  }
 
   // Non-blocking WiFi reconnection
   if (WiFi.status() != WL_CONNECTED) {
