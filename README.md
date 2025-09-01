@@ -23,3 +23,9 @@ Example of API being used in [Homeassistant](https://github.com/etahn-git/3-wire
 <strong>First Time Setup || Old Wifi Network Not Available: </strong> In the event that you are connecting the ESP to WIFI for the first time or the old WIFI Network is no longer available the ESP32 will wait 25 seconds of attempting to connect to the saved credentials, if all 50 connection attempts fail the ESP32 will host a WIFI Network called "Screen Controller Wifi Setup". Connect to this WIFI Network and proceed to http://192.168.32.32/ in your browser, from there click the WIFI Setup button and then fill in the details and press Save & Reboot. <br>
 
 <strong>Changing WIFI Networks with OLD Wifi Network Available: </strong> In the event that you want to change the WIFI Network the ESP connects to when the old WIFI Network is still around, the ESP will connect to the old one. You have two choices either go to the webserver on the current WIFI Network and click the WIFI icon in the bottom right OR turn off the old network temporarily to allow the ESP to create its Hotspot.
+
+<br>
+
+## Configuration
+* Variables `triggerPin`, `relayUp`, `relayDown` pins may need to be changed based off board manufacturer.
+* `delay(10000);` this is the delay for how long a relay remains active before turning off when the screen goes down, may need to change based off length of screen.
