@@ -1,8 +1,9 @@
 # 3-Wire Projector Screen Controller
 A project made with an ESP32 and a dual channel relay to replace a 3 way projector screen switch and instead automatically put the screen down when the USB port from the projector provides 5v power. Manual control is also possible VIA http webpage or http API.
 <br>
-## Wiring Diagram
-<img width="40%" height="40%" alt="Wiring" src="https://github.com/user-attachments/assets/775b6d97-a6ce-4606-afe1-18023c5d9f37" />
+## Wiring Diagram & Photos
+<img width="40%" height="40%" alt="Wiring" src="https://github.com/user-attachments/assets/775b6d97-a6ce-4606-afe1-18023c5d9f37" /><img width="40%" height="40%" alt="Screenshot 2025-08-31 165415" src="https://github.com/user-attachments/assets/685e2653-4428-46ac-94d2-cb9ad1360f8c" />
+
 <br>
 <br>
 
