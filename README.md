@@ -30,3 +30,7 @@ Example of API being used in [Homeassistant](https://github.com/etahn-git/3-wire
 ## Configuration
 * Variables `triggerPin`, `relayUp`, `relayDown` pins may need to be changed based off board manufacturer.
 * `delay(10000);` this is the delay for how long a relay remains active before turning off when the screen goes down, may need to change based off length of screen.
+
+
+## Mobile App
+Create one using https://appsgeyser.com/ I use it and it works great
