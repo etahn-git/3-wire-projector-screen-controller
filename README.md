@@ -16,7 +16,7 @@ The ESP32 connects to a WIFI network and hosts a http server with a webpage to c
 `/down` - sends projector screen down <br>
 `/lock` - locks the projector screens position (ignoring 5v projector signal and manual controls) <br>
 `/toggle` - puts screen up / down <br>
-Example of API being used in homeassistant.
+Example of API being used in [Homeassistant](https://github.com/etahn-git/3-wire-projector-screen-controller/blob/224f235cc4e9872c08a74930ee3d80185485f388/HA.md).
 
 ### Setting / Changing Wifi SSID & Password
 <strong>First Time Setup || Old Wifi Network Not Available: </strong> In the event that you are connecting the ESP to WIFI for the first time or the old WIFI Network is no longer available the ESP32 will wait 25 seconds of attempting to connect to the saved credentials, if all 50 connection attempts fail the ESP32 will host a WIFI Network called "Screen Controller Wifi Setup". Connect to this WIFI Network and proceed to 192.168.32.32 in your browser, from there click the WIFI Setup button and then fill in the details and press Save & Reboot. <br>
