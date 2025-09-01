@@ -197,6 +197,12 @@ void handleScreenDown() {
   server.send(200, "text/plain", "Screen is moving down");
 }
 
+// handles '/toggle'
+void handleToggleScreen() {
+  server.send(200, "text/plain", "Screen toggled");
+  toggleScreen();
+}
+
 // handles /lock
 void handleScreenLock() {
   toggleScreenLock();
@@ -244,6 +250,7 @@ void setup() {
     server.on("/", handleRoot);
     server.on("/up", handleScreenUp);
     server.on("/down", handleScreenDown);
+    server.on("/toggle", handleToggleScreen);
     server.on("/settings", HTTP_POST, handleSettings);
     server.on("/lock", handleScreenLock);
     server.begin();
