@@ -15,6 +15,7 @@ The ESP32 connects to a WIFI network and hosts a http server with a webpage to c
 `/up` - sends projector screen up <br>
 `/down` - sends projector screen down <br>
 `/lock` - locks the projector screens position (ignoring 5v projector signal and manual controls) <br>
+`/toggle` - puts screen up / down <br>
 Example of API being used in homeassistant.
 
 ### Setting / Changing Wifi SSID & Password
